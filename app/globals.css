@@ -238,7 +238,7 @@ footer { background: #1A365D; color: #F7FAFC; padding: 65px 0 25px; }
   .nav-menu.submenu-open .nav-submenu { display: grid; }
   .nav-submenu a { padding: 9px 0; color: var(--ink-soft); }
   .nav-cta { margin-top: 20px; }
-  .nav-backdrop { position: fixed; inset: 0; z-index: 10; display: block; border: 0; background: rgba(10,25,43,.48); opacity: 0; pointer-events: none; transition: opacity .25s ease; }
+  .nav-backdrop { position: fixed; inset: 0; z-index: 4; display: block; border: 0; background: rgba(10,25,43,.48); opacity: 0; pointer-events: none; transition: opacity .25s ease; }
   .nav-backdrop.open { opacity: 1; pointer-events: auto; }
 }
 .admin-card.dirty { border-left: 3px solid var(--orange); }
@@ -299,3 +299,7 @@ footer { background: #1A365D; color: #F7FAFC; padding: 65px 0 25px; }
 
 /* Spec: labels on dark sections use accent color */
 .hero .kicker, .statement .eyebrow, .contact-cta .eyebrow, .mission-band .eyebrow, .statement .benefits b { color: #ED8936; }
+
+/* Principal detail: logo image inside the badge card */
+.principal-badge.has-logo { position: relative; overflow: hidden; background: #ffffff; }
+.principal-badge .principal-logo { object-fit: contain; padding: 28px; }

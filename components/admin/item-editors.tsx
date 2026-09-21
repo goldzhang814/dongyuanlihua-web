@@ -6,6 +6,7 @@ import { Field, ImageUpload, SelectField, type Patch } from "@/components/admin/
 export type EditorContext = {
   productCategories: ProductCategory[];
   newsCategories: NewsCategory[];
+  principals: Principal[];
   uploadable: boolean;
   upload: (collection: string, id: string, file: File) => Promise<void>;
 };
@@ -23,6 +24,7 @@ export function ProductFields({ item, onChange, context, isNew }: { item: Record
       const category = categories.find((entry) => entry.slug === value);
       onChange({ categoryId: value, category: category?.name || "" });
     }} />
+    <SelectField label="Principal (brand)" value={product.principalId || ""} options={[{ value: "", label: "No principal" }, ...context.principals.map((principal) => ({ value: principal.slug, label: principal.name }))]} onChange={(value) => onChange({ principalId: value })} />
     <Field label="Eyebrow" value={text(product.eyebrow)} onChange={(value) => onChange({ eyebrow: value })} />
     <Field label="Title" value={text(product.title)} onChange={(value) => onChange({ title: value })} />
     <Field label="Summary" value={text(product.summary)} onChange={(value) => onChange({ summary: value })} textarea />

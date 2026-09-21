@@ -205,6 +205,7 @@ export default function AdminPage() {
   const context: EditorContext = {
     productCategories: data.productCategories,
     newsCategories: data.newsCategories,
+    principals: data.principals,
     uploadable: backend === "pocketbase",
     upload,
   };

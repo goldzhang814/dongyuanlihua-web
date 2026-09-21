@@ -131,6 +131,7 @@ export async function createItem(collection: Collection, input: Item): Promise<S
   const items = data[collection] as unknown as Item[];
   const error = validateItem(collection, item, items);
   if (error) throw new ValidationError(error);
+  if (collection === "products") validatePrincipalLink(item, data);
   if (collection === "products" && !asText(item.category)) {
     const category = data.productCategories.find((entry) => entry.slug === item.categoryId);
     if (category) item.category = category.name;
@@ -168,6 +169,7 @@ export async function updateItem(collection: Collection, id: string, patch: Item
   }
   const error = validateItem(collection, merged, items, id);
   if (error) throw new ValidationError(error);
+  if (collection === "products") validatePrincipalLink(merged, data);
   if (isPocketBaseConfigured) {
     const rest = { ...merged };
     delete rest.id;
@@ -181,6 +183,13 @@ export async function updateItem(collection: Collection, id: string, patch: Item
     await writeJsonFile(raw);
   }
   return getContentData();
+}
+
+function validatePrincipalLink(item: Item, data: SiteData) {
+  const principalId = asText(item.principalId);
+  if (principalId && !data.principals.some((principal) => principal.slug === principalId)) {
+    throw new ValidationError(`Principal "${principalId}" does not exist`);
+  }
 }
 
 export async function deleteItem(collection: Collection, id: string): Promise<SiteData> {

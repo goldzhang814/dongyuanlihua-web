@@ -87,7 +87,7 @@ export async function getPocketBaseData(): Promise<SiteData> {
 
 const recordFields: Record<string, string[]> = {
   navigation: ["key", "label", "href", "parent", "sort", "enabled", "source"],
-  products: ["slug", "categoryId", "category", "eyebrow", "title", "summary", "description", "seoTitle", "seoDescription", "seoKeywords", "json"],
+  products: ["slug", "categoryId", "category", "principalId", "eyebrow", "title", "summary", "description", "seoTitle", "seoDescription", "seoKeywords", "json"],
   productCategories: ["slug", "name", "description"],
   principals: ["slug", "name", "shortName", "eyebrow", "title", "description", "seoTitle", "seoDescription", "seoKeywords", "year"],
   news: ["slug", "date", "categoryId", "category", "title", "excerpt", "content", "seoTitle", "seoDescription", "seoKeywords"],
@@ -119,25 +119,37 @@ function recordPayload(collection: string, item: Record<string, unknown>, forCre
 
 const idField = (collection: string) => collection === "navigation" ? "key" : collection === "quotes" ? "id" : "slug";
 
-let sourceFieldPromise: Promise<void> | null = null;
+const textField = (name: string, required = false) => ({ system: false, name, type: "text", required, presentable: false });
 
-async function ensureNavigationSourceField() {
-  if (!sourceFieldPromise) {
-    sourceFieldPromise = (async () => {
-      const response = await pocketBaseRequest("/api/collections/navigation");
-      const collection = await response.json() as { fields: Array<{ name: string } & Record<string, unknown>> };
-      if (collection.fields.some((field) => field.name === "source")) return;
-      await pocketBaseRequest("/api/collections/navigation", {
+async function ensureCollectionField(collectionName: string, field: Record<string, unknown> & { name: string }, cache: { promise: Promise<void> | null }) {
+  if (!cache.promise) {
+    cache.promise = (async () => {
+      const response = await pocketBaseRequest(`/api/collections/${collectionName}`);
+      const collection = await response.json() as { fields: Array<Record<string, unknown> & { name: string }> };
+      if (collection.fields.some((entry) => entry.name === field.name)) return;
+      await pocketBaseRequest(`/api/collections/${collectionName}`, {
         method: "PATCH",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ fields: [...collection.fields, { system: false, name: "source", type: "text", required: false, presentable: false }] }),
+        body: JSON.stringify({ fields: [...collection.fields, field] }),
       });
     })();
-    sourceFieldPromise.catch(() => {
-      sourceFieldPromise = null;
+    cache.promise.catch(() => {
+      cache.promise = null;
     });
   }
-  return sourceFieldPromise;
+  return cache.promise;
+}
+
+const productsFieldCache: { promise: Promise<void> | null } = { promise: null };
+
+function ensureProductsPrincipalField() {
+  return ensureCollectionField("products", textField("principalId"), productsFieldCache);
+}
+
+const navigationFieldCache: { promise: Promise<void> | null } = { promise: null };
+
+async function ensureNavigationSourceField() {
+  return ensureCollectionField("navigation", textField("source"), navigationFieldCache);
 }
 
 async function findRecordBySlug(collection: string, slug: string) {
@@ -148,6 +160,7 @@ async function findRecordBySlug(collection: string, slug: string) {
 }
 
 export async function createPocketBaseRecord(collection: string, item: Record<string, unknown>) {
+  if (collection === "products") await ensureProductsPrincipalField();
   const name = pocketBaseCollectionName(collection);
   const payload = recordPayload(collection, item, true);
   if (collection !== "navigation" && collection !== "quotes" && !payload.slug && item.id) payload.slug = String(item.id);
@@ -156,8 +169,6 @@ export async function createPocketBaseRecord(collection: string, item: Record<st
 }
 
 let quotesCollectionPromise: Promise<void> | null = null;
-
-const textField = (name: string, required = false) => ({ system: false, name, type: "text", required, presentable: false });
 
 async function ensureQuotesCollection() {
   if (!quotesCollectionPromise) {
@@ -204,6 +215,7 @@ export async function createPocketBaseQuote(item: Record<string, unknown>) {
 
 export async function updatePocketBaseRecord(collection: string, slug: string, patch: Record<string, unknown>) {
   if (collection === "navigation") await ensureNavigationSourceField();
+  if (collection === "products") await ensureProductsPrincipalField();
   const record = await findRecordBySlug(collection, slug);
   if (!record) throw new Error("Record not found");
   const name = pocketBaseCollectionName(collection);
@@ -218,10 +230,39 @@ export async function deletePocketBaseRecord(collection: string, slug: string) {
   await pocketBaseRequest(`/api/collections/${name}/records/${record.id}`, { method: "DELETE" });
 }
 
+const explicitImageMimeTypes = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+const mimeFixCache = new Map<string, Promise<void>>();
+
+async function ensureFileFieldMimeTypes(collectionName: string, fieldName: string) {
+  const key = `${collectionName}.${fieldName}`;
+  let promise = mimeFixCache.get(key);
+  if (!promise) {
+    promise = (async () => {
+      const response = await pocketBaseRequest(`/api/collections/${collectionName}`);
+      const collection = await response.json() as { fields: Array<Record<string, unknown> & { name: string }> };
+      const fields = collection.fields.map((entry) => ({ ...entry }));
+      const target = fields.find((entry) => entry.name === fieldName);
+      if (!target || target.type !== "file") return;
+      const mimeTypes = Array.isArray(target.mimeTypes) ? target.mimeTypes as string[] : [];
+      if (!mimeTypes.some((type) => type.includes("*"))) return;
+      target.mimeTypes = explicitImageMimeTypes;
+      await pocketBaseRequest(`/api/collections/${collectionName}`, {
+        method: "PATCH",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ fields }),
+      });
+    })();
+    promise.catch(() => mimeFixCache.delete(key));
+    mimeFixCache.set(key, promise);
+  }
+  return promise;
+}
+
 export async function uploadPocketBaseFile(collection: string, slug: string, field: string, file: File) {
+  const name = pocketBaseCollectionName(collection);
+  await ensureFileFieldMimeTypes(name, field);
   const record = await findRecordBySlug(collection, slug);
   if (!record) throw new Error("Record not found");
-  const name = pocketBaseCollectionName(collection);
   const form = new FormData();
   form.append(field, file, file.name);
   await pocketBaseRequest(`/api/collections/${name}/records/${record.id}`, { method: "PATCH", body: form });

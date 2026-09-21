@@ -9,6 +9,7 @@ export type Product = SeoFields & {
   slug?: string;
   image?: string;
   categoryId?: string;
+  principalId?: string;
   category: string;
   eyebrow: string;
   title: string;
