@@ -59,7 +59,20 @@ type PocketRecord = { id: string; [key: string]: unknown };
 
 function fileUrl(collection: string, record: PocketRecord, field = "image") {
   const filename = typeof record[field] === "string" ? record[field] as string : "";
-  return filename ? `${pocketBaseUrl}/api/files/${collection}/${record.id}/${encodeURIComponent(filename)}` : "";
+  return filename ? `/api/files/${collection}/${record.id}/${encodeURIComponent(filename)}` : "";
+}
+
+export async function proxyPocketBaseFile(pathParts: string[]) {
+  if (pathParts.length < 3) return new Response("Not found", { status: 404 });
+  const upstream = await fetch(`${pocketBaseUrl}/api/files/${pathParts.map(encodeURIComponent).join("/")}`, {
+    headers: { Authorization: await authenticate() },
+    cache: "no-store",
+  });
+  if (!upstream.ok || !upstream.body) return new Response("Not found", { status: 404 });
+  const headers = new Headers();
+  headers.set("content-type", upstream.headers.get("content-type") || "application/octet-stream");
+  headers.set("cache-control", "public, max-age=86400, stale-while-revalidate=3600");
+  return new Response(upstream.body, { status: 200, headers });
 }
 
 export async function getPocketBaseData(): Promise<SiteData> {
