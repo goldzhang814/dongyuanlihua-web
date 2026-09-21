@@ -1,4 +1,4 @@
-export const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.dongyuanlihua.com";
+export const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://doniva.cn";
 
 export const siteName = "Doniva";
 export const siteDescription = "Doniva connects Bangladesh and South Asia with authorized Chinese shoe machinery, footwear materials and acetate tow.";
