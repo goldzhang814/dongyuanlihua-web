@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getSessionFromRequest, isValidSession } from "@/lib/admin-auth";
-import { getContentData, uploadImage, uploadTargetFor, ValidationError } from "@/lib/content-store";
+import { getContentData, uploadImage, uploadInlineImage, uploadTargetFor, ValidationError } from "@/lib/content-store";
 
 export async function POST(request: Request) {
   if (!isValidSession(getSessionFromRequest(request))) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -8,6 +8,16 @@ export async function POST(request: Request) {
   const collection = String(form.get("collection") || "products");
   const id = String(form.get("id") || form.get("slug") || "");
   const file = form.get("file") ?? form.get("image") ?? form.get("logo");
+  if (collection === "uploads") {
+    if (!(file instanceof File)) return NextResponse.json({ error: "Image file is required" }, { status: 400 });
+    try {
+      const url = await uploadInlineImage(file);
+      return NextResponse.json({ ok: true, url });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Image upload failed";
+      return NextResponse.json({ error: message }, { status: error instanceof ValidationError ? 400 : 500 });
+    }
+  }
   const target = uploadTargetFor(collection);
   if (!target) return NextResponse.json({ error: `Upload is not supported for ${collection}` }, { status: 400 });
   if (!id || !(file instanceof File)) return NextResponse.json({ error: "Item id and image file are required" }, { status: 400 });

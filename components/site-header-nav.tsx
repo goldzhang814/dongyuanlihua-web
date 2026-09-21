@@ -29,9 +29,9 @@ export function SiteHeaderNav({ groups }: { groups: MenuGroup[] }) {
   }, [menuOpen]);
 
   return <>
-    <div className="topline"><span>SHENZHEN 路 CHINA</span><span>AUTHORIZED INDUSTRIAL SUPPLY FOR SOUTH ASIA</span><a href="mailto:olivia@dongyuanlihua.com">olivia@dongyuanlihua.com</a></div>
+    <div className="topline"><span>SHENZHEN 路 CHINA</span><span>AUTHORIZED INDUSTRIAL SUPPLY FOR SOUTH ASIA</span><a href="mailto:olivia@doniva.cn">olivia@doniva.cn</a></div>
     <nav className="nav shell" aria-label="Main navigation">
-      <Link className="brand" href="/" aria-label="Dongyuan Lihua home"><span className="brand-mark">DL</span><span>DONGYUAN<br /><b>LIHUA</b></span></Link>
+      <Link className="brand" href="/" aria-label="Doniva home"><img className="brand-mark-img" src="/brand-logo.jpg" alt="Doniva" /><span>Doniva<br /></span></Link>
       <button type="button" className={`menu-button ${menuOpen ? "open" : ""}`} onClick={() => setMenuOpen((open) => !open)} aria-label={menuOpen ? "Close navigation" : "Open navigation"} aria-controls="site-navigation" aria-expanded={menuOpen}><span className="menu-button-box"><span /><span /><span /></span></button>
       <div id="site-navigation" className={`nav-links ${menuOpen ? "open" : ""}`}>
         {groups.map((menu) => {

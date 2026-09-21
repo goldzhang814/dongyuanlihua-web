@@ -27,6 +27,7 @@ export default function AdminPage() {
   const [status, setStatus] = useState<{ text: string; error?: boolean }>({ text: "Loading content..." });
   const [navBusy, setNavBusy] = useState(false);
   const [navError, setNavError] = useState("");
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
     refreshAdminData().catch(() => undefined);
@@ -179,6 +180,14 @@ export default function AdminPage() {
     setStatus({ text: "Image uploaded" });
   }
 
+  async function uploadInline(file: File): Promise<string> {
+    const form = new FormData();
+    form.append("collection", "uploads");
+    form.append("file", file);
+    const body = await apiFetch<{ url: string }>("/api/admin/upload", { method: "POST", body: form });
+    return body.url;
+  }
+
   async function saveNavigation(items: NavigationItem[], removed: NavigationItem[]) {
     setNavBusy(true);
     setNavError("");
@@ -221,6 +230,7 @@ export default function AdminPage() {
     principals: data.principals,
     uploadable: backend === "pocketbase",
     upload,
+    uploadInline,
   };
 
   const renderFields = (item: Record<string, unknown>, change: (patch: Patch) => void, isNew: boolean) => {
@@ -236,6 +246,12 @@ export default function AdminPage() {
 
   const items = data[collection] as Array<Record<string, unknown> & { id: string }>;
   const draftEntries = Object.entries(drafts);
+  const itemSummary = (item: Record<string, unknown>) => {
+    const value = item.title ?? item.name ?? item.question ?? item.label ?? "";
+    return typeof value === "string" ? value : String(value);
+  };
+  const normalizedQuery = query.trim().toLowerCase();
+  const visibleItems = items.map((raw, index) => [raw, index] as const).filter(([raw]) => !normalizedQuery || JSON.stringify(raw).toLowerCase().includes(normalizedQuery));
 
   return <main className="admin-shell">
     <aside className="admin-sidebar">
@@ -244,6 +260,7 @@ export default function AdminPage() {
       {allCollections.map((name) => <button className={collection === name ? "active" : ""} onClick={() => {
         if (pendingCount && !window.confirm(`You have ${pendingCount} unsaved item(s) in ${collectionLabels[collection]}. Switch anyway and lose them?`)) return;
         setCollection(name);
+        setQuery("");
         setStatus({ text: collectionLabels[name] });
       }} key={name}>{collectionLabels[name]}<b>{data[name].length}</b></button>)}
       <Link href="/">← View website</Link>
@@ -256,12 +273,12 @@ export default function AdminPage() {
         : collection === "quotes"
           ? <QuotesPanel quotes={data.quotes} busy={busy} errors={errors} onDelete={(id) => deleteItem(id)} />
           : <>
-          <div className="admin-toolbar"><button className="button button-orange" onClick={addItem}>+ Add item</button>{draftEntries.length ? <span className="admin-drafts-hint">{draftEntries.length} new item(s) not saved yet — click Save on each card to store it in the database</span> : null}</div>
+          <div className="admin-toolbar"><button className="button button-orange" onClick={addItem}>+ Add item</button><input className="admin-search" value={query} placeholder={`Filter ${items.length} items...`} onChange={(event) => setQuery(event.target.value)} />{draftEntries.length ? <span className="admin-drafts-hint">{draftEntries.length} new item(s) not saved yet — click Save on each card to store it in the database</span> : null}</div>
           <div className="admin-list">
-            {items.map((raw, index) => {
+            {visibleItems.map(([raw, index]) => {
               const id = raw.id;
               const item = { ...raw, ...edits[id] } as Record<string, unknown>;
-              return <ItemCard key={id} id={id} index={index} dirty={Boolean(edits[id])} busy={Boolean(busy[id])} error={errors[id] || ""} onSave={() => saveItem(id)} onDelete={() => deleteItem(id)}>
+              return <ItemCard key={id} id={id} index={index} dirty={Boolean(edits[id])} busy={Boolean(busy[id])} error={errors[id] || ""} summary={itemSummary(item)} collapsedByDefault onSave={() => saveItem(id)} onDelete={() => deleteItem(id)}>
                 {renderFields(item, (patch) => editItem(id, patch), false)}
               </ItemCard>;
             })}

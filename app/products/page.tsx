@@ -8,7 +8,7 @@ import { targetKeywords } from "@/lib/seo";
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Footwear Machinery, Shoe Materials and Acetate Tow",
-  description: "Explore authorized shoe machinery, footwear materials and diacetate fiber tow supplied by Dongyuan Lihua to Bangladesh and South Asia.",
+  description: "Explore authorized shoe machinery, footwear materials and diacetate fiber tow supplied by Doniva to Bangladesh and South Asia.",
   keywords: ["China shoe machinery export", "Acetate tow supplier Bangladesh", ...targetKeywords],
   alternates: { canonical: "/products" },
 };

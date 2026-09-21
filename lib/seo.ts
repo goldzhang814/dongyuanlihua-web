@@ -1,7 +1,7 @@
 export const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.dongyuanlihua.com";
 
-export const siteName = "Dongyuan Lihua";
-export const siteDescription = "Dongyuan Lihua connects Bangladesh and South Asia with authorized Chinese shoe machinery, footwear materials and acetate tow.";
+export const siteName = "Doniva";
+export const siteDescription = "Doniva connects Bangladesh and South Asia with authorized Chinese shoe machinery, footwear materials and acetate tow.";
 export const targetKeywords = [
   "KCLKA shoe machine agent Bangladesh",
   "Acetate tow supplier Bangladesh",

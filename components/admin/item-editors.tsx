@@ -2,6 +2,7 @@
 
 import type { NewsArticle, NewsCategory, Principal, Product, ProductCategory } from "@/types/content";
 import { Field, ImageUpload, SelectField, type Patch } from "@/components/admin/fields";
+import { RichTextEditor } from "@/components/admin/rich-text-editor";
 
 export type EditorContext = {
   productCategories: ProductCategory[];
@@ -9,6 +10,7 @@ export type EditorContext = {
   principals: Principal[];
   uploadable: boolean;
   upload: (collection: string, id: string, file: File) => Promise<void>;
+  uploadInline: (file: File) => Promise<string>;
 };
 
 const text = (value: unknown) => (typeof value === "string" ? value : value == null ? "" : String(value));
@@ -28,7 +30,7 @@ export function ProductFields({ item, onChange, context, isNew }: { item: Record
     <Field label="Eyebrow" value={text(product.eyebrow)} onChange={(value) => onChange({ eyebrow: value })} />
     <Field label="Title" value={text(product.title)} onChange={(value) => onChange({ title: value })} />
     <Field label="Summary" value={text(product.summary)} onChange={(value) => onChange({ summary: value })} textarea />
-    <Field label="Description" value={text(product.description)} onChange={(value) => onChange({ description: value })} textarea />
+    <RichTextEditor label="Description (rich text)" value={text(product.description)} uploadImage={context.uploadable ? (file) => context.uploadInline(file) : undefined} onChange={(html) => onChange({ description: html })} />
     <Field label="SEO title" value={text(product.seoTitle)} onChange={(value) => onChange({ seoTitle: value })} />
     <Field label="SEO description" value={text(product.seoDescription)} onChange={(value) => onChange({ seoDescription: value })} textarea />
     <Field label="SEO keywords (comma separated)" value={text(product.seoKeywords)} onChange={(value) => onChange({ seoKeywords: value })} />

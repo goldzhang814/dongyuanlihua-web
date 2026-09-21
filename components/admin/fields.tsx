@@ -12,11 +12,26 @@ export function SelectField({ label, value, options, onChange }: { label: string
   return <label className="admin-field">{label}<select value={value} onChange={(event) => onChange(event.target.value)}>{options.map((option) => <option value={option.value} key={option.value}>{option.label}</option>)}</select></label>;
 }
 
-export function ItemCard({ id, index, dirty, busy, error, onSave, onDelete, children }: { id: string; index: number; dirty: boolean; busy: boolean; error: string; onSave: () => void; onDelete: () => void; children: ReactNode }) {
+export function ItemCard({ id, index, dirty, busy, error, summary, collapsedByDefault = false, onSave, onDelete, children }: { id: string; index: number; dirty: boolean; busy: boolean; error: string; summary?: string; collapsedByDefault?: boolean; onSave: () => void; onDelete: () => void; children: ReactNode }) {
+  const [expanded, setExpanded] = useState(!collapsedByDefault);
+  if (!expanded) {
+    return <div className={`admin-card admin-card-collapsed${dirty ? " dirty" : ""}`}>
+      <div className="admin-card-head">
+        <span>#{index + 1} · {id}{summary ? <b className="admin-card-summary">{summary}</b> : null}</span>
+        <span className="admin-card-tools">
+          {dirty ? <span className="admin-dirty">unsaved</span> : null}
+          <button className="admin-tool-save" onClick={() => setExpanded(true)}>Edit</button>
+          <button className="admin-tool-delete" onClick={onDelete}>Delete</button>
+        </span>
+      </div>
+      {error ? <p className="admin-error">{error}</p> : null}
+    </div>;
+  }
   return <div className={`admin-card${dirty ? " dirty" : ""}`}>
     <div className="admin-card-head">
       <span>#{index + 1} · {id}</span>
       <span className="admin-card-tools">
+        <button className="admin-tool-cancel" onClick={() => setExpanded(false)}>Collapse</button>
         {dirty ? <span className="admin-dirty">unsaved</span> : null}
         <button className="admin-tool-save" disabled={!dirty || busy} onClick={onSave}>{busy ? "Saving..." : "Save"}</button>
         <button className="admin-tool-delete" onClick={onDelete}>Delete</button>

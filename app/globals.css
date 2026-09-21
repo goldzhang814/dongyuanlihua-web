@@ -305,3 +305,31 @@ footer { background: #1A365D; color: #F7FAFC; padding: 65px 0 25px; }
 .principal-badge .principal-logo { object-fit: contain; padding: 28px; }
 
 .admin-drafts-hint { align-self: center; color: var(--orange); font-size: 11px; font-weight: 700; }
+
+/* Admin list: collapsed cards + search */
+.admin-card-collapsed { padding: 16px 22px; }
+.admin-card-summary { margin-left: 14px; color: var(--ink); font: 600 13px 'Roboto', sans-serif; letter-spacing: 0; text-transform: none; }
+.admin-card-collapsed .admin-card-head { margin-bottom: 0; }
+.admin-search { margin-left: auto; padding: 11px 14px; border: 1px solid var(--line); background: var(--white); color: var(--ink); font: 13px 'Roboto', sans-serif; min-width: 240px; outline: none; }
+.admin-search:focus { border-color: var(--orange); }
+
+/* Rich text product body */
+.product-body { margin: 0 0 30px; color: var(--ink-soft); font-size: 15px; line-height: 1.8; overflow-wrap: break-word; }
+.product-body h2 { margin: 30px 0 14px; font: 600 24px/1.2 'Montserrat', sans-serif; letter-spacing: -.02em; color: var(--ink); }
+.product-body h3 { margin: 24px 0 10px; font: 600 19px/1.25 'Montserrat', sans-serif; color: var(--ink); }
+.product-body p { margin: 0 0 14px; }
+.product-body ul, .product-body ol { margin: 0 0 16px; padding-left: 22px; }
+.product-body li { margin-bottom: 6px; }
+.product-body a { color: var(--orange); text-decoration: underline; }
+.product-body blockquote { margin: 18px 0; padding: 12px 18px; border-left: 3px solid var(--orange); background: #F7FAFC; color: var(--ink); }
+.product-body img { max-width: 100%; height: auto; border-radius: 8px; margin: 12px 0; }
+.product-body strong { color: var(--ink); }
+
+/* Product detail: full-width rich body below the two-column hero */
+.detail-body { padding: 10px 0 50px; }
+.detail-body .product-body { max-width: 860px; }
+
+.detail-body-title { margin: 44px 0 20px; padding-top: 36px; border-top: 1px solid var(--line); font: 600 clamp(20px, 2.2vw, 24px)/1.2 'Montserrat', sans-serif; letter-spacing: -.02em; color: var(--ink); }
+
+/* Brand logo image in nav + footer */
+.brand-mark-img { width: 40px; height: 40px; object-fit: contain; background: #ffffff; border-radius: 9px; flex: none; }

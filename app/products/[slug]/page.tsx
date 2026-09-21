@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { getSiteData } from "@/lib/content";
 import { cleanJsonLd, keywordList, siteUrl, targetKeywords } from "@/lib/seo";
+import { sanitizeHtml, stripHtml } from "@/lib/sanitize";
 
 export const dynamic = "force-dynamic";
 
@@ -15,7 +16,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!product) return { title: "Product not found" };
   return {
     title: product.seoTitle || product.title,
-    description: product.seoDescription || product.description,
+    description: product.seoDescription || stripHtml(product.description).slice(0, 160),
     keywords: keywordList(product.seoKeywords, [product.category, "Bangladesh", "South Asia", ...targetKeywords]),
     alternates: { canonical: `/products/${product.slug || product.id}` },
   };
@@ -32,10 +33,10 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
     "@id": `${siteUrl}/products/${product.id}#product`,
     name: product.title,
     category: product.category,
-    description: product.description,
+    description: stripHtml(product.description).slice(0, 300),
     url: `${siteUrl}/products/${product.id}`,
     brand: { "@type": "Brand", name: product.eyebrow },
-    manufacturer: { "@type": "Organization", name: "Dongyuan Lihua" },
+    manufacturer: { "@type": "Organization", name: "Doniva" },
   };
   const breadcrumbSchema = {
     "@context": "https://schema.org",
@@ -45,5 +46,5 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
       { "@type": "ListItem", position: 2, name: product.title, item: `${siteUrl}/products/${product.id}` },
     ],
   };
-  return <><SiteHeader /><main className="detail-page"><div className="shell"><Link className="back-link" href="/products">← All products</Link><div className="detail-layout"><div className={`detail-art product-${products.indexOf(product) + 1}`}>{product.image && <Image unoptimized src={product.image} alt={product.title} fill sizes="(max-width: 800px) 100vw, 45vw" className="detail-product-image" />}<span>{product.category}</span></div><article className="detail-copy"><span className="eyebrow">{product.eyebrow}</span><h1>{product.title}</h1><p className="detail-lead">{product.description}</p><h2>Key applications and support</h2><ul>{product.specs.map((spec) => <li key={spec}>{spec}</li>)}</ul><Link className="button button-orange" href="/contact">Request a quotation <span>↗</span></Link></article></div></div></main><SiteFooter /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: cleanJsonLd(productSchema) }} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: cleanJsonLd(breadcrumbSchema) }} /></>;
+  return <><SiteHeader /><main className="detail-page"><div className="shell"><Link className="back-link" href="/products">← All products</Link><div className="detail-layout"><div className={`detail-art product-${products.indexOf(product) + 1}`}>{product.image && <Image unoptimized src={product.image} alt={product.title} fill sizes="(max-width: 800px) 100vw, 45vw" className="detail-product-image" />}<span>{product.category}</span></div><article className="detail-copy"><span className="eyebrow">{product.eyebrow}</span><h1>{product.title}</h1>{product.summary ? <p className="detail-lead">{product.summary}</p> : null}<h2>Key applications and support</h2><ul>{product.specs.map((spec) => <li key={spec}>{spec}</li>)}</ul><Link className="button button-orange" href="/contact">Request a quotation <span>↗</span></Link></article></div>{product.description ? <section className="detail-body"><h2 className="detail-body-title">Product details</h2><div className="product-body" dangerouslySetInnerHTML={{ __html: sanitizeHtml(product.description) }} /></section> : null}</div></main><SiteFooter /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: cleanJsonLd(productSchema) }} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: cleanJsonLd(breadcrumbSchema) }} /></>;
 }

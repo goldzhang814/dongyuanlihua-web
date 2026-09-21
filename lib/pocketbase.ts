@@ -226,6 +226,41 @@ export async function createPocketBaseQuote(item: Record<string, unknown>) {
   return response.json();
 }
 
+let uploadsCollectionPromise: Promise<void> | null = null;
+
+const fileField = (name: string, maxSelect = 1) => ({ system: false, name, type: "file", required: false, presentable: false, maxSelect });
+
+async function ensureUploadsCollection() {
+  if (!uploadsCollectionPromise) {
+    uploadsCollectionPromise = (async () => {
+      try {
+        await pocketBaseRequest("/api/collections/uploads");
+        return;
+      } catch (error) {
+        if (!(error instanceof Error) || !error.message.includes("(404)")) throw error;
+      }
+      await pocketBaseRequest("/api/collections", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ name: "uploads", type: "base", fields: [fileField("file")] }),
+      });
+    })();
+    uploadsCollectionPromise.catch(() => {
+      uploadsCollectionPromise = null;
+    });
+  }
+  return uploadsCollectionPromise;
+}
+
+export async function createPocketBaseUpload(file: File) {
+  await ensureUploadsCollection();
+  const form = new FormData();
+  form.append("file", file, file.name);
+  const response = await pocketBaseRequest("/api/collections/uploads/records", { method: "POST", body: form });
+  const record = await response.json() as PocketRecord;
+  return fileUrl("uploads", record, "file");
+}
+
 export async function updatePocketBaseRecord(collection: string, slug: string, patch: Record<string, unknown>) {
   if (collection === "navigation") await ensureNavigationSourceField();
   if (collection === "products") await ensureProductsPrincipalField();

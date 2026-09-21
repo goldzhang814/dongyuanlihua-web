@@ -1,7 +1,7 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import type { SiteData } from "@/types/content";
-import { createPocketBaseQuote, createPocketBaseRecord, deletePocketBaseRecord, getPocketBaseData, isPocketBaseConfigured, updatePocketBaseRecord, uploadPocketBaseFile } from "@/lib/pocketbase";
+import { createPocketBaseQuote, createPocketBaseRecord, createPocketBaseUpload, deletePocketBaseRecord, getPocketBaseData, isPocketBaseConfigured, updatePocketBaseRecord, uploadPocketBaseFile } from "@/lib/pocketbase";
 import { slugify, uniqueSlug } from "@/lib/slug";
 
 export const collections = ["navigation", "products", "productCategories", "principals", "news", "newsCategories", "faqs", "quotes"] as const;
@@ -91,6 +91,7 @@ function validateItem(collection: Collection, item: Item, items: Item[], selfId?
   if (collection === "products") {
     if (!asText(item.title)) return "Title is required";
     if (!asText(item.categoryId)) return "Select a product category";
+    if (asText(item.description).length > 200000) return "Description is too long";
     item.specs = asList(item.specs);
   }
   if (collection === "news") {
@@ -257,4 +258,11 @@ export async function uploadImage(collection: string, id: string, file: File): P
   if (!target) throw new ValidationError(`Upload is not supported for ${collection}`);
   if (!isPocketBaseConfigured) throw new ValidationError("Image upload requires PocketBase; set POCKETBASE_URL in .env.local");
   return uploadPocketBaseFile(collection, id, target.field, file);
+}
+
+export async function uploadInlineImage(file: File): Promise<string> {
+  if (!file.type.startsWith("image/")) throw new ValidationError("Only image files are supported");
+  if (file.size > 8 * 1024 * 1024) throw new ValidationError("Image must be smaller than 8 MB");
+  if (!isPocketBaseConfigured) throw new ValidationError("Image upload requires PocketBase; set POCKETBASE_URL in .env.local");
+  return createPocketBaseUpload(file);
 }

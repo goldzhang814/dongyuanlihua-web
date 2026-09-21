@@ -4,8 +4,8 @@ import { QuoteForm } from "@/components/quote-form";
 import { cleanJsonLd, siteUrl, targetKeywords } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Contact Dongyuan Lihua",
-  description: "Contact Dongyuan Lihua in Shenzhen for shoe machinery, footwear materials, acetate tow and China-to-Bangladesh sourcing support.",
+  title: "Contact Doniva",
+  description: "Contact Doniva in Shenzhen for shoe machinery, footwear materials, acetate tow and China-to-Bangladesh sourcing support.",
   keywords: ["China shoe machinery export", "Acetate tow supplier Bangladesh", "Shenzhen import export company", ...targetKeywords],
   alternates: { canonical: "/contact" },
 };
@@ -16,15 +16,15 @@ export default function ContactPage() {
     "@type": "ContactPage",
     "@id": `${siteUrl}/contact#contactpage`,
     url: `${siteUrl}/contact`,
-    name: "Contact Dongyuan Lihua",
+    name: "Contact Doniva",
     mainEntity: {
       "@type": "Organization",
-      name: "Dongyuan Lihua",
-      email: "olivia@dongyuanlihua.com",
+      name: "Doniva",
+      email: "olivia@doniva.cn",
       telephone: "+86 135 4415 3386",
       address: { "@type": "PostalAddress", streetAddress: "A-2610, Xinian Center, 6021 Shennan Avenue, Futian District", addressLocality: "Shenzhen", addressRegion: "Guangdong", addressCountry: "CN" },
     },
   };
 
-  return <><SiteHeader /><PageIntro eyebrow="CONTACT / 06" title={<>Let&apos;s move your <em>next order forward.</em></>} copy="Tell us what you need to source, compare or ship. We respond within 24 business hours." /><main className="contact-page shell"><div className="contact-layout"><div><span className="eyebrow">DIRECT CONTACT</span><h2>Talk to the team closest to the supply.</h2><div className="contact-details"><a href="mailto:olivia@dongyuanlihua.com">olivia@dongyuanlihua.com</a><a href="tel:+8613544153386">+86 135 4415 3386 · WhatsApp</a><span>A-2610, Xinian Center<br /> 6021 Shennan Avenue, Futian District, Shenzhen, China</span></div></div><QuoteForm /></div></main><SiteFooter /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: cleanJsonLd(contactSchema) }} /></>;
+  return <><SiteHeader /><PageIntro eyebrow="CONTACT / 06" title={<>Let&apos;s move your <em>next order forward.</em></>} copy="Tell us what you need to source, compare or ship. We respond within 24 business hours." /><main className="contact-page shell"><div className="contact-layout"><div><span className="eyebrow">DIRECT CONTACT</span><h2>Talk to the team closest to the supply.</h2><div className="contact-details"><a href="mailto:olivia@doniva.cn">olivia@doniva.cn</a><a href="tel:+8613544153386">+86 135 4415 3386 · WhatsApp</a><span>A-2610, Xinian Center<br /> 6021 Shennan Avenue, Futian District, Shenzhen, China</span></div></div><QuoteForm /></div></main><SiteFooter /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: cleanJsonLd(contactSchema) }} /></>;
 }

@@ -5,11 +5,11 @@
     { "id": "acetate-tow", "slug": "acetate-tow", "name": "Acetate Tow", "description": "Diacetate fiber tow for filtration and hygiene applications." }
   ],
   "principals": [
-    { "id": "kclka", "slug": "kclka", "name": "KCLKA", "shortName": "KCLKA", "eyebrow": "JINJIANG KAIJIA MACHINE MANUFACTURING", "title": "Complete footwear machinery for a growing industry.", "description": "200+ employees · 40,000–60,000㎡ facilities · exports to 70+ countries. Dongyuan Lihua manages local marketing, sales negotiation and after-sales coordination for Bangladesh.", "year": "2003" },
+    { "id": "kclka", "slug": "kclka", "name": "KCLKA", "shortName": "KCLKA", "eyebrow": "JINJIANG KAIJIA MACHINE MANUFACTURING", "title": "Complete footwear machinery for a growing industry.", "description": "200+ employees · 40,000–60,000㎡ facilities · exports to 70+ countries. Doniva manages local marketing, sales negotiation and after-sales coordination for Bangladesh.", "year": "2003" },
     { "id": "xinyang", "slug": "xinyang", "name": "Xinyang Special Fiber", "shortName": "XY", "eyebrow": "HUBEI XINYANG SPECIAL FIBER", "title": "Diacetate fiber tow with export experience.", "description": "A national high-tech enterprise and NEEQ-listed producer with a 99%+ export revenue ratio. We support Bangladesh market requirements for filter tow and related applications.", "year": "2002" }
   ],
   "newsCategories": [
-    { "id": "company", "slug": "company", "name": "Company News", "description": "Dongyuan Lihua company updates and announcements." },
+    { "id": "company", "slug": "company", "name": "Company News", "description": "Doniva company updates and announcements." },
     { "id": "industry", "slug": "industry", "name": "Industry News", "description": "Industrial sourcing and market insights." }
   ],
   "products": [
@@ -21,7 +21,7 @@
       "eyebrow": "KCLKA OFFICIAL AGENT",
       "title": "Complete footwear machinery",
       "summary": "EVA, PVC, TPR and PU equipment for complete footwear production lines.",
-      "description": "Dongyuan Lihua is the officially authorized Bangladesh market agent for Jinjiang KCLKA Machine Manufacturing Co., Ltd. We coordinate machinery selection, quotation, installation and after-sales support.",
+      "description": "Doniva is the officially authorized Bangladesh market agent for Jinjiang KCLKA Machine Manufacturing Co., Ltd. We coordinate machinery selection, quotation, installation and after-sales support.",
       "specs": [
         "EVA injection molding machines",
         "PVC injection and blow molding",
@@ -53,7 +53,7 @@
       "eyebrow": "XINYANG EXPORT AGENT",
       "title": "Diacetate fiber tow",
       "summary": "Reliable acetate tow for cigarette filters, precision filtration and hygiene materials.",
-      "description": "Dongyuan Lihua is the authorized export agent for Hubei Xinyang Special Fiber Co., Ltd. in the Bangladesh market, supporting stable supply and export coordination.",
+      "description": "Doniva is the authorized export agent for Hubei Xinyang Special Fiber Co., Ltd. in the Bangladesh market, supporting stable supply and export coordination.",
       "specs": [
         "Cellulose acetate tow",
         "Primary use: cigarette filter rods",
@@ -70,16 +70,16 @@
       "category": "Market insight",
       "title": "A practical sourcing guide for Bangladesh footwear manufacturers",
       "excerpt": "What procurement teams should confirm before choosing machinery, materials and an export partner.",
-      "content": "Bangladesh footwear manufacturers benefit from combining equipment selection, material sourcing and local after-sales coordination in one clear procurement process. Dongyuan Lihua helps buyers connect those steps with authorized Chinese partners."
+      "content": "Bangladesh footwear manufacturers benefit from combining equipment selection, material sourcing and local after-sales coordination in one clear procurement process. Doniva helps buyers connect those steps with authorized Chinese partners."
     },
     {
       "id": "kclka-agent-bangladesh",
       "categoryId": "company",
       "date": "2026-08-12",
       "category": "Company news",
-      "title": "Dongyuan Lihua strengthens KCLKA support for Bangladesh",
+      "title": "Doniva strengthens KCLKA support for Bangladesh",
       "excerpt": "Our official agency relationship connects Bangladesh manufacturers with KCLKA machinery and factory coordination.",
-      "content": "As KCLKA's officially authorized Bangladesh market agent, Dongyuan Lihua supports product selection, commercial communication, installation planning and spare parts coordination."
+      "content": "As KCLKA's officially authorized Bangladesh market agent, Doniva supports product selection, commercial communication, installation planning and spare parts coordination."
     },
     {
       "id": "acetate-tow-applications",
@@ -95,12 +95,12 @@
     {
       "id": "faq-agent",
       "question": "Who is the KCLKA agent in Bangladesh?",
-      "answer": "Dongyuan Lihua (Shenzhen) International Development Co., Ltd. is the officially authorized agent of KCLKA shoe machinery in Bangladesh."
+      "answer": "Doniva International Development Co., Ltd. is the officially authorized agent of KCLKA shoe machinery in Bangladesh."
     },
     {
       "id": "faq-tow",
       "question": "Where can I source acetate tow in Bangladesh?",
-      "answer": "Dongyuan Lihua is the authorized export agent for Hubei Xinyang Special Fiber and supplies diacetate fiber tow for Bangladesh market requirements."
+      "answer": "Doniva is the authorized export agent for Hubei Xinyang Special Fiber and supplies diacetate fiber tow for Bangladesh market requirements."
     },
     {
       "id": "faq-line",

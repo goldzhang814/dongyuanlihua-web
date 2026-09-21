@@ -36,8 +36,8 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ slu
     datePublished: article.date,
     dateModified: article.date,
     mainEntityOfPage: `${siteUrl}/news/${article.id}`,
-    author: { "@type": "Organization", name: "Dongyuan Lihua", url: siteUrl },
-    publisher: { "@type": "Organization", name: "Dongyuan Lihua", url: siteUrl },
+    author: { "@type": "Organization", name: "Doniva", url: siteUrl },
+    publisher: { "@type": "Organization", name: "Doniva", url: siteUrl },
   };
   const breadcrumbSchema = {
     "@context": "https://schema.org",
@@ -47,5 +47,5 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ slu
       { "@type": "ListItem", position: 2, name: article.title, item: `${siteUrl}/news/${article.id}` },
     ],
   };
-  return <><SiteHeader /><main className="article-page"><div className="shell article-wrap"><Link className="back-link" href="/news">← All news</Link><span className="eyebrow">{article.category} · {article.date}</span><h1>{article.title}</h1><p className="article-lead">{article.excerpt}</p><div className="article-body"><p>{article.content}</p><p>For current specifications, availability and export requirements, contact the Dongyuan Lihua team. We will match your brief with the right factory-side information and next steps.</p></div><Link className="button button-orange" href="/contact">Discuss your requirement <span>↗</span></Link></div></main><SiteFooter /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: cleanJsonLd(articleSchema) }} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: cleanJsonLd(breadcrumbSchema) }} /></>;
+  return <><SiteHeader /><main className="article-page"><div className="shell article-wrap"><Link className="back-link" href="/news">← All news</Link><span className="eyebrow">{article.category} · {article.date}</span><h1>{article.title}</h1><p className="article-lead">{article.excerpt}</p><div className="article-body"><p>{article.content}</p><p>For current specifications, availability and export requirements, contact the Doniva team. We will match your brief with the right factory-side information and next steps.</p></div><Link className="button button-orange" href="/contact">Discuss your requirement <span>↗</span></Link></div></main><SiteFooter /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: cleanJsonLd(articleSchema) }} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: cleanJsonLd(breadcrumbSchema) }} /></>;
 }

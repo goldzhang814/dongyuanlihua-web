@@ -33,10 +33,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       {
         "@type": "Organization",
         "@id": `${siteUrl}/#organization`,
-        name: "Dongyuan Lihua (Shenzhen) International Development Co., Ltd.",
+        name: "Doniva International Development Co., Ltd.",
         alternateName: siteName,
         url: siteUrl,
-        email: "olivia@dongyuanlihua.com",
+        email: "olivia@doniva.cn",
         telephone: "+86 135 4415 3386",
         description: siteDescription,
         areaServed: ["Bangladesh", "South Asia"],

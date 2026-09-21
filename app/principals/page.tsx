@@ -6,7 +6,7 @@ import { targetKeywords } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Our Chinese Manufacturing Principals",
-  description: "Meet Dongyuan Lihua's manufacturing principals: KCLKA footwear machinery and Xinyang Special Fiber acetate tow for Bangladesh buyers.",
+  description: "Meet Doniva's manufacturing principals: KCLKA footwear machinery and Xinyang Special Fiber acetate tow for Bangladesh buyers.",
   keywords: ["KCLKA shoe machine agent Bangladesh", "Acetate tow supplier Bangladesh", ...targetKeywords],
   alternates: { canonical: "/principals" },
 };
