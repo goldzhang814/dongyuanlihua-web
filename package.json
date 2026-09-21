@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "migrate:pocketbase": "node scripts/migrate-content-to-pocketbase.mjs"
   },
   "dependencies": {
     "next": "16.3.4",
