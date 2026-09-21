@@ -1,6 +1,6 @@
 # PocketBase setup
 
-Create six collections in PocketBase with API names `products`, `product_categories`, `principals`, `news`, `news_categories`, and `faqs`.
+Create these seven base collections in PocketBase before running `npm run migrate:pocketbase`: `products`, `product_categories`, `principals`, `news`, `news_categories`, `faqs`, and `navigation`. The `quotes` collection is created automatically after the first quote submission.
 
 ## Products fields
 

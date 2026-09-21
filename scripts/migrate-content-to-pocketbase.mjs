@@ -41,9 +41,23 @@ const definitions = [
   { source: "navigation", collection: "navigation", key: "key", payload: (item) => ({ key: item.key || item.id, label: item.label, href: item.href, parent: item.parent || "", sort: Number(item.sort || 0), enabled: item.enabled !== false, source: item.source || "manual" }) },
 ];
 
+const schemas = new Map();
+const missingCollections = [];
+for (const definition of definitions) {
+  try {
+    schemas.set(definition.collection, await request(`/api/collections/${definition.collection}`));
+  } catch (error) {
+    if (error instanceof Error && error.message.includes("(404)")) missingCollections.push(definition.collection);
+    else throw error;
+  }
+}
+if (missingCollections.length) {
+  throw new Error(`Missing PocketBase collections: ${missingCollections.join(", ")}. Create them first; see docs/pocketbase-setup.md.`);
+}
+
 for (const definition of definitions) {
   const items = source[definition.source] || [];
-  const schema = await request(`/api/collections/${definition.collection}`);
+  const schema = schemas.get(definition.collection);
   const fields = new Set((schema.fields || []).map((field) => field.name));
   for (const item of items) {
     const fullPayload = definition.payload(item);
