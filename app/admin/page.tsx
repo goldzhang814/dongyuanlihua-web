@@ -32,6 +32,19 @@ export default function AdminPage() {
     refreshAdminData().catch(() => undefined);
   }, []);
 
+  const pendingCount = Object.keys(edits).length + Object.keys(drafts).length;
+
+  useEffect(() => {
+    if (!pendingCount) return;
+    const handler = (event: BeforeUnloadEvent) => {
+      event.preventDefault();
+    };
+    window.addEventListener("beforeunload", handler);
+    return () => {
+      window.removeEventListener("beforeunload", handler);
+    };
+  }, [pendingCount]);
+
   function setBusyFlag(key: string, value: boolean) {
     setBusy((current) => ({ ...current, [key]: value }));
   }
@@ -228,7 +241,11 @@ export default function AdminPage() {
     <aside className="admin-sidebar">
       <div className="admin-logo">DL <span>CONTENT DESK</span></div>
       <p>{backend === "pocketbase" ? "PocketBase content source" : "Local data file source"}</p>
-      {allCollections.map((name) => <button className={collection === name ? "active" : ""} onClick={() => { setCollection(name); setStatus({ text: collectionLabels[name] }); }} key={name}>{collectionLabels[name]}<b>{data[name].length}</b></button>)}
+      {allCollections.map((name) => <button className={collection === name ? "active" : ""} onClick={() => {
+        if (pendingCount && !window.confirm(`You have ${pendingCount} unsaved item(s) in ${collectionLabels[collection]}. Switch anyway and lose them?`)) return;
+        setCollection(name);
+        setStatus({ text: collectionLabels[name] });
+      }} key={name}>{collectionLabels[name]}<b>{data[name].length}</b></button>)}
       <Link href="/">← View website</Link>
       <button className="admin-logout" onClick={logout}>Sign out</button>
     </aside>
@@ -239,7 +256,7 @@ export default function AdminPage() {
         : collection === "quotes"
           ? <QuotesPanel quotes={data.quotes} busy={busy} errors={errors} onDelete={(id) => deleteItem(id)} />
           : <>
-          <div className="admin-toolbar"><button className="button button-orange" onClick={addItem}>+ Add item</button></div>
+          <div className="admin-toolbar"><button className="button button-orange" onClick={addItem}>+ Add item</button>{draftEntries.length ? <span className="admin-drafts-hint">{draftEntries.length} new item(s) not saved yet — click Save on each card to store it in the database</span> : null}</div>
           <div className="admin-list">
             {items.map((raw, index) => {
               const id = raw.id;
