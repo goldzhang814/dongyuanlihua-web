@@ -12,7 +12,10 @@ Create six collections in PocketBase with API names `products`, `product_categor
 - `title`: text
 - `summary`: text
 - `description`: text
-- `specs`: JSON
+- `json`: JSON (product specifications)
+- `seoTitle`: text, optional
+- `seoDescription`: text, optional
+- `seoKeywords`: text, optional, comma-separated
 
 ## News fields
 
@@ -22,6 +25,9 @@ Create six collections in PocketBase with API names `products`, `product_categor
 - `title`: text
 - `excerpt`: text
 - `content`: text
+- `seoTitle`: text, optional
+- `seoDescription`: text, optional
+- `seoKeywords`: text, optional, comma-separated
 
 ## Product categories fields
 
@@ -39,6 +45,9 @@ The product `categoryId` value must match the category `slug`. The three initial
 - `eyebrow`: text
 - `title`: text
 - `description`: text
+- `seoTitle`: text, optional
+- `seoDescription`: text, optional
+- `seoKeywords`: text, optional, comma-separated
 - `year`: text
 - `logo`: file, single file, optional
 
@@ -68,7 +77,7 @@ The news `categoryId` value must match the category `slug`. The initial menu ite
 - `enabled`: bool (disabled menus are hidden on the site)
 - `source`: text, one of `manual`, `productCategories`, `principals`, `newsCategories`
 
-When `source` is not `manual`, the submenu automatically appends live entries from that collection (for example `/products?category=<slug>`) after the manual submenu items. When the navigation collection is empty, the site falls back to the built-in product/principal/news menus derived from the categories.
+When `source` is not `manual`, the submenu automatically appends live entries from that collection (for example `/products/<slug>/`) after the manual submenu items. When the navigation collection is empty, the site falls back to the built-in product/principal/news menus derived from the categories.
 
 ## Quotes collection
 

@@ -87,10 +87,10 @@ export async function getPocketBaseData(): Promise<SiteData> {
 
 const recordFields: Record<string, string[]> = {
   navigation: ["key", "label", "href", "parent", "sort", "enabled", "source"],
-  products: ["slug", "categoryId", "category", "eyebrow", "title", "summary", "description", "json"],
+  products: ["slug", "categoryId", "category", "eyebrow", "title", "summary", "description", "seoTitle", "seoDescription", "seoKeywords", "json"],
   productCategories: ["slug", "name", "description"],
-  principals: ["slug", "name", "shortName", "eyebrow", "title", "description", "year"],
-  news: ["slug", "date", "categoryId", "category", "title", "excerpt", "content"],
+  principals: ["slug", "name", "shortName", "eyebrow", "title", "description", "seoTitle", "seoDescription", "seoKeywords", "year"],
+  news: ["slug", "date", "categoryId", "category", "title", "excerpt", "content", "seoTitle", "seoDescription", "seoKeywords"],
   newsCategories: ["slug", "name", "description"],
   faqs: ["slug", "question", "answer"],
   quotes: ["name", "company", "email", "interest", "message", "createdAt"],
