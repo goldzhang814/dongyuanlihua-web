@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "migrate:pocketbase": "node scripts/migrate-content-to-pocketbase.mjs"
+    "migrate:pocketbase": "node scripts/migrate-content-to-pocketbase.mjs",
+    "migrate:pocketbase:schema": "node scripts/ensure-pocketbase-schema.mjs"
   },
   "dependencies": {
     "next": "16.3.4",

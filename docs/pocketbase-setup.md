@@ -1,6 +1,6 @@
 # PocketBase setup
 
-Create these seven base collections in PocketBase before running `npm run migrate:pocketbase`: `products`, `product_categories`, `principals`, `news`, `news_categories`, `faqs`, and `navigation`. The `quotes` collection is created automatically after the first quote submission.
+Run `npm run migrate:pocketbase:schema` to create or update the collections automatically. It preserves existing records and fields. The managed base collections are `products`, `product_categories`, `principals`, `news`, `news_categories`, `faqs`, `navigation`, and `quotes`.
 
 ## Products fields
 
