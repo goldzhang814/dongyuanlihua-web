@@ -6,9 +6,9 @@ export type MenuGroup = { key: string; label: string; href: string; items: MenuI
 type NavigationInput = Pick<SiteData, "navigation" | "productCategories" | "principals" | "newsCategories">;
 
 const navSources = {
-  productCategories: { href: (slug: string) => `/products/${slug}` },
+  productCategories: { href: (slug: string) => `/products/?category=${slug}` },
   principals: { href: (slug: string) => `/principals/${slug}` },
-  newsCategories: { href: (slug: string) => `/news?category=${slug}` },
+  newsCategories: { href: (slug: string) => `/news/?category=${slug}` },
 } as const;
 
 function fallbackGroups(input: NavigationInput): MenuGroup[] {
@@ -16,7 +16,7 @@ function fallbackGroups(input: NavigationInput): MenuGroup[] {
   const brands = input.principals.length ? input.principals : [{ id: "kclka", slug: "kclka", name: "KCLKA" }, { id: "xinyang", slug: "xinyang", name: "Xinyang Special Fiber" }];
   const news = input.newsCategories.length ? input.newsCategories : [{ id: "company", slug: "company", name: "Company News" }, { id: "industry", slug: "industry", name: "Industry News" }];
   return [
-    { key: "products", label: "Products", href: "/products", items: products.map((item) => ({ label: item.name, href: `/products/${item.slug}` })) },
+    { key: "products", label: "Products", href: "/products", items: products.map((item) => ({ label: item.name, href: `/products/?category=${item.slug}` })) },
     { key: "principals", label: "Principals", href: "/principals", items: brands.map((item) => ({ label: item.name, href: `/principals/${item.slug}` })) },
     { key: "news", label: "News", href: "/news", items: news.map((item) => ({ label: item.name, href: `/news?category=${item.slug}` })) },
   ];
