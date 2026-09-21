@@ -41,7 +41,7 @@ export function SiteHeaderNav({ groups }: { groups: MenuGroup[] }) {
               <Link href={menu.href} onClick={close}>{menu.label}</Link>
               <button type="button" className="submenu-toggle" onClick={() => setOpenGroup(submenuOpen ? null : menu.key)} aria-label={`${submenuOpen ? "Collapse" : "Expand"} ${menu.label} menu`} aria-expanded={submenuOpen}><span>⌄</span></button>
             </div>
-            <div className="nav-submenu"><Link href={menu.href} onClick={close}>View all</Link>{menu.items.map((item) => <Link href={item.href} onClick={close} key={item.href}>{item.label}</Link>)}</div>
+            <div className="nav-submenu">{menu.items.filter((item) => item.label.trim().toLowerCase() !== "view all").map((item) => <Link href={item.href} onClick={close} key={item.href}>{item.label}</Link>)}</div>
           </div>;
         })}
         <Link href="/about-us" onClick={close}>About us</Link>

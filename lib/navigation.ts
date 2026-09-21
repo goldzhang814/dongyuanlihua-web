@@ -16,9 +16,9 @@ function fallbackGroups(input: NavigationInput): MenuGroup[] {
   const brands = input.principals.length ? input.principals : [{ id: "kclka", slug: "kclka", name: "KCLKA" }, { id: "xinyang", slug: "xinyang", name: "Xinyang Special Fiber" }];
   const news = input.newsCategories.length ? input.newsCategories : [{ id: "company", slug: "company", name: "Company News" }, { id: "industry", slug: "industry", name: "Industry News" }];
   return [
-    { key: "products", label: "Products", href: "/products", items: [{ label: "View all", href: "/products" }, ...products.map((item) => ({ label: item.name, href: `/products/${item.slug}` }))] },
-    { key: "principals", label: "Principals", href: "/principals", items: [{ label: "View all", href: "/principals" }, ...brands.map((item) => ({ label: item.name, href: `/principals/${item.slug}` }))] },
-    { key: "news", label: "News", href: "/news", items: [{ label: "View all", href: "/news" }, ...news.map((item) => ({ label: item.name, href: `/news?category=${item.slug}` }))] },
+    { key: "products", label: "Products", href: "/products", items: products.map((item) => ({ label: item.name, href: `/products/${item.slug}` })) },
+    { key: "principals", label: "Principals", href: "/principals", items: brands.map((item) => ({ label: item.name, href: `/principals/${item.slug}` })) },
+    { key: "news", label: "News", href: "/news", items: news.map((item) => ({ label: item.name, href: `/news?category=${item.slug}` })) },
   ];
 }
 
