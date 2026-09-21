@@ -34,3 +34,43 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+
+## 在服务器运行：
+```bash
+cd /srv/dongyuanlihua-web
+
+set -a
+source .env.production
+set +a
+
+npm run build
+npm run start -- -p 3000
+
+```
+
+### 看到类似 Ready 后，访问：
+http://服务器IP:3000
+确认正常后，用 systemd 保持后台运行：
+
+```bash
+
+sudo systemctl enable --now dongyuanlihua
+sudo systemctl restart dongyuanlihua
+sudo systemctl status dongyuanlihua
+
+```
+
+### 查看实时日志：
+sudo journalctl -u dongyuanlihua -f
+
+### 每次更新代码后的标准流程：
+
+```bash
+cd /srv/dongyuanlihua-web
+git pull
+npm ci
+npm run build
+sudo systemctl restart dongyuanlihua
+
+```
