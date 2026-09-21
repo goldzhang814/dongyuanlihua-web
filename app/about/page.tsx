@@ -22,7 +22,7 @@ export default function AboutPage() {
       <div><dt>Customs Registration</dt><dd>Shenzhen Customs Code 4403961HB4</dd></div>
       <div><dt>Business Scope</dt><dd>Import &amp; export of machinery, electronic products, footwear materials, and industrial goods</dd></div>
       <div><dt>Registered Address</dt><dd>A-2610, Xinian Center, 6021 Shennan Avenue, Futian District, Shenzhen, China</dd></div>
-      <div><dt>Operating Address</dt><dd>1-201-5, Baichuan Zhihui Plaza, 466 Zhangbei Avenue, Longgang District, Shenzhen, China</dd></div>
+      <div><dt>Operating Address</dt><dd>A-2610, Xinian Center, 6021 Shennan Avenue, Futian District, Shenzhen, China</dd></div>
     </dl></div></section>
     <section className="mission-band"><div className="shell"><span className="eyebrow">OUR MISSION</span><p className="mission-statement">To connect Bangladeshi manufacturers with world-class Chinese industrial equipment and materials through transparent, authorized, and fully supported trade relationships.</p><p className="mission-tagline">We don&apos;t just ship products — <em>we deliver supply chain confidence.</em></p></div></section>
   </main><SiteFooter /></>;
