@@ -1,0 +1,116 @@
+{
+  "productCategories": [
+    { "id": "shoe-machinery", "slug": "shoe-machinery", "name": "Shoe Machinery", "description": "EVA, PVC, TPR and PU footwear production machinery." },
+    { "id": "shoe-materials", "slug": "shoe-materials", "name": "Shoe Materials", "description": "Materials, components and fittings for footwear production." },
+    { "id": "acetate-tow", "slug": "acetate-tow", "name": "Acetate Tow", "description": "Diacetate fiber tow for filtration and hygiene applications." }
+  ],
+  "principals": [
+    { "id": "kclka", "slug": "kclka", "name": "KCLKA", "shortName": "KCLKA", "eyebrow": "JINJIANG KAIJIA MACHINE MANUFACTURING", "title": "Complete footwear machinery for a growing industry.", "description": "200+ employees · 40,000–60,000㎡ facilities · exports to 70+ countries. Dongyuan Lihua manages local marketing, sales negotiation and after-sales coordination for Bangladesh.", "year": "2003" },
+    { "id": "xinyang", "slug": "xinyang", "name": "Xinyang Special Fiber", "shortName": "XY", "eyebrow": "HUBEI XINYANG SPECIAL FIBER", "title": "Diacetate fiber tow with export experience.", "description": "A national high-tech enterprise and NEEQ-listed producer with a 99%+ export revenue ratio. We support Bangladesh market requirements for filter tow and related applications.", "year": "2002" }
+  ],
+  "newsCategories": [
+    { "id": "company", "slug": "company", "name": "Company News", "description": "Dongyuan Lihua company updates and announcements." },
+    { "id": "industry", "slug": "industry", "name": "Industry News", "description": "Industrial sourcing and market insights." }
+  ],
+  "products": [
+    {
+      "id": "shoe-machinery",
+      "categoryId": "shoe-machinery",
+      "image": "",
+      "category": "Shoe Machinery",
+      "eyebrow": "KCLKA OFFICIAL AGENT",
+      "title": "Complete footwear machinery",
+      "summary": "EVA, PVC, TPR and PU equipment for complete footwear production lines.",
+      "description": "Dongyuan Lihua is the officially authorized Bangladesh market agent for Jinjiang KCLKA Machine Manufacturing Co., Ltd. We coordinate machinery selection, quotation, installation and after-sales support.",
+      "specs": [
+        "EVA injection molding machines",
+        "PVC injection and blow molding",
+        "TPR and PU production equipment",
+        "Overseas installation and commissioning"
+      ]
+    },
+    {
+      "id": "shoe-materials",
+      "categoryId": "shoe-materials",
+      "image": "",
+      "category": "Shoe Materials",
+      "eyebrow": "JIAPINYUN PARTNERSHIP",
+      "title": "Materials for every production step",
+      "summary": "Materials, components and fittings sourced from China's footwear capital.",
+      "description": "Through our partnership with Quanzhou Jiapinyun Technology Development Co., Ltd., we help footwear manufacturers simplify material sourcing from Jinjiang's industrial cluster.",
+      "specs": [
+        "Plastic components and accessories",
+        "Upper and lining materials",
+        "Footwear hardware and fittings",
+        "Custom material development support"
+      ]
+    },
+    {
+      "id": "acetate-tow",
+      "categoryId": "acetate-tow",
+      "image": "",
+      "category": "Acetate Tow",
+      "eyebrow": "XINYANG EXPORT AGENT",
+      "title": "Diacetate fiber tow",
+      "summary": "Reliable acetate tow for cigarette filters, precision filtration and hygiene materials.",
+      "description": "Dongyuan Lihua is the authorized export agent for Hubei Xinyang Special Fiber Co., Ltd. in the Bangladesh market, supporting stable supply and export coordination.",
+      "specs": [
+        "Cellulose acetate tow",
+        "Primary use: cigarette filter rods",
+        "Precision filtration applications",
+        "Medical and hygiene materials"
+      ]
+    }
+  ],
+  "news": [
+    {
+      "id": "bangladesh-sourcing-guide",
+      "categoryId": "industry",
+      "date": "2026-08-28",
+      "category": "Market insight",
+      "title": "A practical sourcing guide for Bangladesh footwear manufacturers",
+      "excerpt": "What procurement teams should confirm before choosing machinery, materials and an export partner.",
+      "content": "Bangladesh footwear manufacturers benefit from combining equipment selection, material sourcing and local after-sales coordination in one clear procurement process. Dongyuan Lihua helps buyers connect those steps with authorized Chinese partners."
+    },
+    {
+      "id": "kclka-agent-bangladesh",
+      "categoryId": "company",
+      "date": "2026-08-12",
+      "category": "Company news",
+      "title": "Dongyuan Lihua strengthens KCLKA support for Bangladesh",
+      "excerpt": "Our official agency relationship connects Bangladesh manufacturers with KCLKA machinery and factory coordination.",
+      "content": "As KCLKA's officially authorized Bangladesh market agent, Dongyuan Lihua supports product selection, commercial communication, installation planning and spare parts coordination."
+    },
+    {
+      "id": "acetate-tow-applications",
+      "categoryId": "industry",
+      "date": "2026-07-19",
+      "category": "Product insight",
+      "title": "Where diacetate fiber tow is used",
+      "excerpt": "A concise introduction to acetate tow applications in filter production and precision filtration.",
+      "content": "Diacetate fiber tow is primarily used to manufacture cigarette filter rods. It is also used in precision filtration and selected medical and hygiene applications."
+    }
+  ],
+  "faqs": [
+    {
+      "id": "faq-agent",
+      "question": "Who is the KCLKA agent in Bangladesh?",
+      "answer": "Dongyuan Lihua (Shenzhen) International Development Co., Ltd. is the officially authorized agent of KCLKA shoe machinery in Bangladesh."
+    },
+    {
+      "id": "faq-tow",
+      "question": "Where can I source acetate tow in Bangladesh?",
+      "answer": "Dongyuan Lihua is the authorized export agent for Hubei Xinyang Special Fiber and supplies diacetate fiber tow for Bangladesh market requirements."
+    },
+    {
+      "id": "faq-line",
+      "question": "Can you support a complete shoe production line?",
+      "answer": "Yes. We can coordinate KCLKA machinery, Jiapinyun materials, quotation, installation and after-sales communication."
+    },
+    {
+      "id": "faq-response",
+      "question": "How quickly do you respond to business inquiries?",
+      "answer": "We respond to business inquiries within 24 hours during business days, GMT+8. Urgent requests can be sent through WhatsApp."
+    }
+  ]
+}
