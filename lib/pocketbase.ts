@@ -22,12 +22,16 @@ async function authenticate() {
   return adminToken;
 }
 
-async function pocketBaseRequest(pathname: string, init: RequestInit = {}) {
+async function pocketBaseRequest(pathname: string, init: RequestInit = {}, allowRetry = true) {
   const response = await fetch(`${pocketBaseUrl}${pathname}`, {
     ...init,
     headers: { Authorization: await authenticate(), ...(init.headers || {}) },
     cache: "no-store",
   });
+  if (!response.ok && (response.status === 401 || response.status === 403) && adminToken && allowRetry) {
+    adminToken = "";
+    return pocketBaseRequest(pathname, init, false);
+  }
   if (!response.ok) {
     let detail = response.statusText;
     const raw = await response.text().catch(() => "");
@@ -90,7 +94,7 @@ export async function getPocketBaseData(): Promise<SiteData> {
   const products = (await productsResponse.json() as RecordList<PocketRecord>).items.map((record) => ({ ...record, id: String(record.slug), image: fileUrl("products", record), specs: record.specs ?? record.json ?? [] })) as unknown as Product[];
   const news = (await newsResponse.json() as RecordList<PocketRecord>).items.map((record) => ({ ...record, id: String(record.slug) })) as unknown as NewsArticle[];
   const faqs = (await faqsResponse.json() as RecordList<PocketRecord>).items.map((record) => ({ ...record, id: String(record.slug) })) as unknown as Faq[];
-  const productCategories = productCategoriesResponse ? (await productCategoriesResponse.json() as RecordList<PocketRecord>).items.sort(byCreated).map((record) => ({ ...record, id: String(record.slug) })) as unknown as ProductCategory[] : [];
+  const productCategories = productCategoriesResponse ? (await productCategoriesResponse.json() as RecordList<PocketRecord>).items.sort(byCreated).map((record) => ({ ...record, id: String(record.slug), image: fileUrl("product_categories", record) })) as unknown as ProductCategory[] : [];
   const principals = principalsResponse ? (await principalsResponse.json() as RecordList<PocketRecord>).items.sort(byCreated).map((record) => ({ ...record, id: String(record.slug), logo: fileUrl("principals", record, "logo") })) as unknown as Principal[] : [];
   const newsCategories = newsCategoriesResponse ? (await newsCategoriesResponse.json() as RecordList<PocketRecord>).items.sort(byCreated).map((record) => ({ ...record, id: String(record.slug) })) as unknown as NewsCategory[] : [];
   const navigation = navigationResponse ? (await navigationResponse.json() as RecordList<PocketRecord>).items.map((record) => ({ ...record, id: String(record.key || record.slug || record.id), sort: Number(record.sort || 0), enabled: record.enabled === true || record.enabled === "true" })) as unknown as NavigationItem[] : [];
@@ -101,7 +105,7 @@ export async function getPocketBaseData(): Promise<SiteData> {
 const recordFields: Record<string, string[]> = {
   navigation: ["key", "label", "href", "parent", "sort", "enabled", "source"],
   products: ["slug", "categoryId", "category", "principalId", "eyebrow", "title", "summary", "description", "seoTitle", "seoDescription", "seoKeywords", "json"],
-  productCategories: ["slug", "name", "description"],
+  productCategories: ["slug", "name", "description", "image"],
   principals: ["slug", "name", "shortName", "eyebrow", "title", "description", "seoTitle", "seoDescription", "seoKeywords", "year"],
   news: ["slug", "date", "categoryId", "category", "title", "excerpt", "content", "seoTitle", "seoDescription", "seoKeywords"],
   newsCategories: ["slug", "name", "description"],
@@ -109,11 +113,25 @@ const recordFields: Record<string, string[]> = {
   quotes: ["name", "company", "email", "interest", "message", "createdAt"],
 };
 
+const fileFieldNames = new Set(["image", "logo", "file"]);
+
+function normalizeFileFieldValue(value: unknown): unknown {
+  if (typeof value !== "string") return value;
+  const match = value.match(/\/api\/files\/[^/]+\/[^/]+\/([^/?#]+)$/);
+  if (!match) return value;
+  try {
+    return decodeURIComponent(match[1]);
+  } catch {
+    return match[1];
+  }
+}
+
 function recordPayload(collection: string, item: Record<string, unknown>, forCreate: boolean) {
   const allowedFields = recordFields[collection] || [];
   const payload: Record<string, unknown> = {};
   for (const field of allowedFields) {
-    if (field in item) payload[field] = item[field];
+    if (!(field in item)) continue;
+    payload[field] = fileFieldNames.has(field) ? normalizeFileFieldValue(item[field]) : item[field];
   }
   if (collection === "products") {
     payload.json = item.specs ?? payload.json ?? [];
@@ -155,6 +173,12 @@ async function ensureCollectionField(collectionName: string, field: Record<strin
 
 const productsFieldCache: { promise: Promise<void> | null } = { promise: null };
 
+const categoryImageCache: { promise: Promise<void> | null } = { promise: null };
+
+function ensureCategoryImageField() {
+  return ensureCollectionField("product_categories", fileField("image"), categoryImageCache);
+}
+
 function ensureProductsPrincipalField() {
   return ensureCollectionField("products", textField("principalId"), productsFieldCache);
 }
@@ -174,6 +198,7 @@ async function findRecordBySlug(collection: string, slug: string) {
 
 export async function createPocketBaseRecord(collection: string, item: Record<string, unknown>) {
   if (collection === "products") await ensureProductsPrincipalField();
+  if (collection === "productCategories") await ensureCategoryImageField();
   const name = pocketBaseCollectionName(collection);
   const payload = recordPayload(collection, item, true);
   if (collection !== "navigation" && collection !== "quotes" && !payload.slug && item.id) payload.slug = String(item.id);
@@ -264,6 +289,7 @@ export async function createPocketBaseUpload(file: File) {
 export async function updatePocketBaseRecord(collection: string, slug: string, patch: Record<string, unknown>) {
   if (collection === "navigation") await ensureNavigationSourceField();
   if (collection === "products") await ensureProductsPrincipalField();
+  if (collection === "productCategories") await ensureCategoryImageField();
   const record = await findRecordBySlug(collection, slug);
   if (!record) throw new Error("Record not found");
   const name = pocketBaseCollectionName(collection);
@@ -307,6 +333,7 @@ async function ensureFileFieldMimeTypes(collectionName: string, fieldName: strin
 }
 
 export async function uploadPocketBaseFile(collection: string, slug: string, field: string, file: File) {
+  if (collection === "productCategories") await ensureCategoryImageField();
   const name = pocketBaseCollectionName(collection);
   await ensureFileFieldMimeTypes(name, field);
   const record = await findRecordBySlug(collection, slug);

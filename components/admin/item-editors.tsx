@@ -57,11 +57,12 @@ export function NewsFields({ item, onChange, context }: { item: Record<string, u
   </>;
 }
 
-export function CategoryFields({ item, onChange }: { item: Record<string, unknown>; onChange: (patch: Patch) => void }) {
+export function CategoryFields({ item, onChange, context, withImage = false }: { item: Record<string, unknown>; onChange: (patch: Patch) => void; context?: EditorContext; withImage?: boolean }) {
   const category = item as unknown as ProductCategory;
   return <>
     <Field label="Slug (URL segment)" value={text(category.slug || category.id)} onChange={(value) => onChange({ slug: value })} placeholder="shoe-machinery" />
     <Field label="Name" value={text(category.name)} onChange={(value) => onChange({ name: value })} />
+    {withImage && context ? <ImageUpload label="Category image (homepage card)" value={category.image || ""} uploadable={context.uploadable} hint="Image upload requires PocketBase. Suggested size 800x450px." onChange={(value) => onChange({ image: value })} upload={(file) => context.upload("productCategories", String(category.slug || category.id), file)} /> : null}
     <Field label="Description" value={category.description || ""} onChange={(value) => onChange({ description: value })} textarea />
   </>;
 }

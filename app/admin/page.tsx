@@ -237,7 +237,7 @@ export default function AdminPage() {
     switch (collection) {
       case "products": return <ProductFields item={item} onChange={change} context={context} isNew={isNew} />;
       case "news": return <NewsFields item={item} onChange={change} context={context} />;
-      case "productCategories":
+      case "productCategories": return <CategoryFields item={item} onChange={change} context={context} withImage />;
       case "newsCategories": return <CategoryFields item={item} onChange={change} />;
       case "principals": return <PrincipalFields item={item} onChange={change} context={context} isNew={isNew} />;
       default: return <FaqFields item={item} onChange={change} />;

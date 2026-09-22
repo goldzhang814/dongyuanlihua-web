@@ -247,7 +247,7 @@ export async function createQuote(input: Item): Promise<void> {
   await writeJsonFile(raw);
 }
 
-const uploadTargets = { products: { field: "image", label: "Product image" }, principals: { field: "logo", label: "Principal logo" } } as const;
+const uploadTargets = { products: { field: "image", label: "Product image" }, principals: { field: "logo", label: "Principal logo" }, productCategories: { field: "image", label: "Category image" } } as const;
 
 export function uploadTargetFor(collection: string) {
   return uploadTargets[collection as keyof typeof uploadTargets] || null;

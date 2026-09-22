@@ -8,6 +8,7 @@ export type MutationResult = { ok: true; data: SiteData };
 
 export async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
   const response = await fetch(path, init);
+  if (response.status === 413) throw new Error("File is too large for the server (413). Compress the image, or raise the nginx client_max_body_size limit.");
   const body = (await response.json().catch(() => null)) as (T & { error?: string }) | null;
   if (!response.ok || !body) throw new Error(body?.error || `Request failed (${response.status})`);
   return body;

@@ -31,7 +31,7 @@ export type NewsArticle = SeoFields & {
 
 export type Faq = { id: string; question: string; answer: string };
 export type Quote = { id: string; name: string; company?: string; email: string; interest?: string; message?: string; createdAt?: string };
-export type ProductCategory = { id: string; name: string; slug: string; description?: string };
+export type ProductCategory = { id: string; name: string; slug: string; description?: string; image?: string };
 export type Principal = SeoFields & { id: string; name: string; slug: string; shortName: string; eyebrow: string; title: string; description: string; year?: string; logo?: string };
 export type NewsCategory = { id: string; name: string; slug: string; description?: string };
 export type NavSource = "manual" | "productCategories" | "principals" | "newsCategories";
