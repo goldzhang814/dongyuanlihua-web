@@ -16,12 +16,15 @@ export type EditorContext = {
 const text = (value: unknown) => (typeof value === "string" ? value : value == null ? "" : String(value));
 const list = (value: unknown) => (Array.isArray(value) ? value.map((entry) => String(entry)) : []);
 
+const uploadHint = (context: EditorContext, isNew: boolean, hint: string) =>
+  isNew && context.uploadable ? "Save this item first — the upload button appears once it is stored in PocketBase." : hint;
+
 export function ProductFields({ item, onChange, context, isNew }: { item: Record<string, unknown>; onChange: (patch: Patch) => void; context: EditorContext; isNew: boolean }) {
   const product = item as unknown as Product;
   const categories = context.productCategories;
   return <>
     <Field label="Slug (URL segment)" value={text(product.slug || product.id)} onChange={(value) => onChange({ slug: value })} placeholder="eva-injection-machine" />
-    <ImageUpload label="Product image" value={product.image || ""} uploadable={context.uploadable && !isNew} hint="Image upload requires PocketBase. You can use a local path such as /products/machine.jpg." onChange={(value) => onChange({ image: value })} upload={(file) => context.upload("products", product.id, file)} />
+    <ImageUpload label="Product image" value={product.image || ""} uploadable={context.uploadable && !isNew} hint={uploadHint(context, isNew, "Image upload requires PocketBase. You can use a local path such as /products/machine.jpg.")} onChange={(value) => onChange({ image: value })} upload={(file) => context.upload("products", product.id, file)} />
     <SelectField label="Product category" value={product.categoryId || ""} options={[{ value: "", label: "Select a category" }, ...categories.map((category) => ({ value: category.slug, label: category.name }))]} onChange={(value) => {
       const category = categories.find((entry) => entry.slug === value);
       onChange({ categoryId: value, category: category?.name || "" });
@@ -57,12 +60,12 @@ export function NewsFields({ item, onChange, context }: { item: Record<string, u
   </>;
 }
 
-export function CategoryFields({ item, onChange, context, withImage = false }: { item: Record<string, unknown>; onChange: (patch: Patch) => void; context?: EditorContext; withImage?: boolean }) {
+export function CategoryFields({ item, onChange, context, withImage = false, isNew = false }: { item: Record<string, unknown>; onChange: (patch: Patch) => void; context?: EditorContext; withImage?: boolean; isNew?: boolean }) {
   const category = item as unknown as ProductCategory;
   return <>
     <Field label="Slug (URL segment)" value={text(category.slug || category.id)} onChange={(value) => onChange({ slug: value })} placeholder="shoe-machinery" />
     <Field label="Name" value={text(category.name)} onChange={(value) => onChange({ name: value })} />
-    {withImage && context ? <ImageUpload label="Category image (homepage card)" value={category.image || ""} uploadable={context.uploadable} hint="Image upload requires PocketBase. Suggested size 800x450px." onChange={(value) => onChange({ image: value })} upload={(file) => context.upload("productCategories", String(category.slug || category.id), file)} /> : null}
+    {withImage && context ? <ImageUpload label="Category image (homepage card)" value={category.image || ""} uploadable={context.uploadable && !isNew} hint={uploadHint(context, isNew, "Image upload requires PocketBase. Suggested size 800x450px.")} onChange={(value) => onChange({ image: value })} upload={(file) => context.upload("productCategories", String(category.slug || category.id), file)} /> : null}
     <Field label="Description" value={category.description || ""} onChange={(value) => onChange({ description: value })} textarea />
   </>;
 }
@@ -73,7 +76,7 @@ export function PrincipalFields({ item, onChange, context, isNew }: { item: Reco
     <Field label="Slug (URL segment)" value={text(principal.slug || principal.id)} onChange={(value) => onChange({ slug: value })} placeholder="kclka" />
     <Field label="Name" value={text(principal.name)} onChange={(value) => onChange({ name: value })} />
     <Field label="Short name" value={text(principal.shortName)} onChange={(value) => onChange({ shortName: value })} />
-    <ImageUpload label="Principal logo" value={principal.logo || ""} uploadable={context.uploadable && !isNew} hint="Logo upload requires PocketBase." onChange={(value) => onChange({ logo: value })} upload={(file) => context.upload("principals", principal.id, file)} />
+    <ImageUpload label="Principal logo" value={principal.logo || ""} uploadable={context.uploadable && !isNew} hint={uploadHint(context, isNew, "Logo upload requires PocketBase.")} onChange={(value) => onChange({ logo: value })} upload={(file) => context.upload("principals", principal.id, file)} />
     <Field label="Eyebrow" value={text(principal.eyebrow)} onChange={(value) => onChange({ eyebrow: value })} />
     <Field label="Title" value={text(principal.title)} onChange={(value) => onChange({ title: value })} />
     <Field label="Description" value={text(principal.description)} onChange={(value) => onChange({ description: value })} textarea />
