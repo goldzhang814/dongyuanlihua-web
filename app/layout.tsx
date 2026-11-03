@@ -36,7 +36,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         name: "Doniva International Development Co., Ltd.",
         alternateName: siteName,
         url: siteUrl,
-        email: "Sabrina@doniva.com",
+        email: "Sabrina@doniva.cn",
         telephone: "+86 135 4415 3386",
         description: siteDescription,
         areaServed: ["Bangladesh", "South Asia"],
