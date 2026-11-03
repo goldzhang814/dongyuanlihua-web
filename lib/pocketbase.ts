@@ -277,10 +277,28 @@ async function ensureUploadsCollection() {
   return uploadsCollectionPromise;
 }
 
+async function optimizeImageFile(file: File): Promise<File> {
+  if (!file.type.startsWith("image/")) return file;
+  try {
+    const sharp = (await import("sharp")).default;
+    const buffer = await sharp(Buffer.from(await file.arrayBuffer()))
+      .rotate()
+      .resize({ width: 1200, withoutEnlargement: true })
+      .webp({ quality: 84 })
+      .toBuffer();
+    if (buffer.length >= file.size) return file;
+    const base = file.name.replace(/\.[^.]+$/, "");
+    return new File([buffer], `${base}.webp`, { type: "image/webp" });
+  } catch {
+    return file;
+  }
+}
+
 export async function createPocketBaseUpload(file: File) {
   await ensureUploadsCollection();
+  const optimized = await optimizeImageFile(file);
   const form = new FormData();
-  form.append("file", file, file.name);
+  form.append("file", optimized, optimized.name);
   const response = await pocketBaseRequest("/api/collections/uploads/records", { method: "POST", body: form });
   const record = await response.json() as PocketRecord;
   return fileUrl("uploads", record, "file");
@@ -338,8 +356,9 @@ export async function uploadPocketBaseFile(collection: string, slug: string, fie
   await ensureFileFieldMimeTypes(name, field);
   const record = await findRecordBySlug(collection, slug);
   if (!record) throw new Error("Record not found");
+  const optimized = await optimizeImageFile(file);
   const form = new FormData();
-  form.append(field, file, file.name);
+  form.append(field, optimized, optimized.name);
   await pocketBaseRequest(`/api/collections/${name}/records/${record.id}`, { method: "PATCH", body: form });
-  return fileUrl(name, { ...record, [field]: file.name }, field);
+  return fileUrl(name, { ...record, [field]: optimized.name }, field);
 }
